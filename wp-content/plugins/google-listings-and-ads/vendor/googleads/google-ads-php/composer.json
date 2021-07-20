@@ -1,13 +1,12 @@
 {
   "name": "googleads/google-ads-php",
-  "author": "Google LLC",
-  "url": "https://github.com/googleads/google-ads-php",
+  "homepage": "https://github.com/googleads/google-ads-php",
   "description": "Google Ads API client for PHP",
   "require": {
     "php": ">=7.3",
     "google/gax": "^1.7.0",
     "grpc/grpc": "^1.36.0",
-    "google/protobuf": "^3.15.0",
+    "google/protobuf": "^3.17.1",
     "monolog/monolog": "^2.0"
   },
   "require-dev": {
@@ -15,7 +14,8 @@
     "squizlabs/php_codesniffer": "^3.5",
     "ext-bcmath": "*",
     "ulrichsg/getopt-php": "^3.4",
-    "react/http": "^1.2.0"
+    "react/http": "^1.2.0",
+    "composer/composer": "^2.0"
   },
   "suggest": {
     "react/http": "To run the AuthenticateInWebApplication.php example",
@@ -45,6 +45,9 @@
   "scripts": {
     "test": [
       "phpunit tests"
+    ],
+    "remove-api-version-support": [
+      "Google\\Ads\\GoogleAds\\Util\\ApiVersionSupport::remove"
     ]
   }
 }

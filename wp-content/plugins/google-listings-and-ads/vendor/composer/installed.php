@@ -6,7 +6,7 @@
     'aliases' => 
     array (
     ),
-    'reference' => '14d73c1ef089af6a51e95c4e07ea92562e2cc9d0',
+    'reference' => '3d0e626faff401142d7f215d858cc14e03d18c17',
     'name' => 'woocommerce/google-listings-and-ads',
   ),
   'versions' => 
@@ -121,39 +121,39 @@
     ),
     'firebase/php-jwt' => 
     array (
-      'pretty_version' => 'v5.2.1',
-      'version' => '5.2.1.0',
+      'pretty_version' => 'v5.4.0',
+      'version' => '5.4.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'f42c9110abe98dd6cfe9053c49bc86acc70b2d23',
+      'reference' => 'd2113d9b2e0e349796e72d2a63cf9319100382d2',
     ),
     'google/apiclient' => 
     array (
-      'pretty_version' => 'v2.9.1',
-      'version' => '2.9.1.0',
+      'pretty_version' => 'v2.10.0',
+      'version' => '2.10.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '2fb6e702aca5d68203fa737f89f6f774022494c6',
+      'reference' => 'b86b0c974bc998499e080f3d3178aaab06d07ee3',
     ),
     'google/apiclient-services' => 
     array (
-      'pretty_version' => 'v0.164.0',
-      'version' => '0.164.0.0',
+      'pretty_version' => 'v0.200.0',
+      'version' => '0.200.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '266557af3f595681eb9199853641f334a913d1bf',
+      'reference' => '0375af405757b36f3bcc82e19d7daf61e0b4cfd8',
     ),
     'google/auth' => 
     array (
-      'pretty_version' => 'v1.15.0',
-      'version' => '1.15.0.0',
+      'pretty_version' => 'v1.16.0',
+      'version' => '1.16.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'b346c07de6613e26443d7b4830e5e1933b830dc4',
+      'reference' => 'c747738d2dd450f541f09f26510198fbedd1c8a0',
     ),
     'google/common-protos' => 
     array (
@@ -166,12 +166,12 @@
     ),
     'google/gax' => 
     array (
-      'pretty_version' => '1.7.0',
-      'version' => '1.7.0.0',
+      'pretty_version' => 'v1.7.1',
+      'version' => '1.7.1.0',
       'aliases' => 
       array (
       ),
-      'reference' => 'a2d48062b0ac0433da463a1f7c77ab672bbbfa08',
+      'reference' => '48cd41dbea7b8fece8c41100022786d149de64ca',
     ),
     'google/grpc-gcp' => 
     array (
@@ -184,39 +184,39 @@
     ),
     'google/protobuf' => 
     array (
-      'pretty_version' => 'v3.15.6',
-      'version' => '3.15.6.0',
+      'pretty_version' => 'v3.17.3',
+      'version' => '3.17.3.0',
       'aliases' => 
       array (
       ),
-      'reference' => '3237975660b8fd3ed51cf34312a1a166572d2463',
+      'reference' => 'ae9282cf11dd2933b7e71a611f9590f07d53d3f3',
     ),
     'googleads/google-ads-php' => 
     array (
-      'pretty_version' => 'v8.0.0',
-      'version' => '8.0.0.0',
+      'pretty_version' => 'v10.0.0',
+      'version' => '10.0.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '1851304783baa69617a7fd07c6f034835c932e83',
+      'reference' => '630dacbdbc295a4acad99b9fa44b36ddc1188ccf',
     ),
     'grpc/grpc' => 
     array (
-      'pretty_version' => '1.36.0',
-      'version' => '1.36.0.0',
+      'pretty_version' => '1.38.0',
+      'version' => '1.38.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '6145dd917d340b579f0b663940b17cc93172b79a',
+      'reference' => 'e1687963fb0b087d0c70e75d3bfff9062eaeb215',
     ),
     'guzzlehttp/guzzle' => 
     array (
-      'pretty_version' => '7.2.0',
-      'version' => '7.2.0.0',
+      'pretty_version' => '7.3.0',
+      'version' => '7.3.0.0',
       'aliases' => 
       array (
       ),
-      'reference' => '0aa74dfb41ae110835923ef10a9d803a22d50e79',
+      'reference' => '7008573787b430c1c1f650e3722d9bba59967628',
     ),
     'guzzlehttp/promises' => 
     array (
@@ -229,12 +229,12 @@
     ),
     'guzzlehttp/psr7' => 
     array (
-      'pretty_version' => '1.7.0',
-      'version' => '1.7.0.0',
+      'pretty_version' => '1.8.2',
+      'version' => '1.8.2.0',
       'aliases' => 
       array (
       ),
-      'reference' => '53330f47520498c0ae1f61f7e2c90f55690c06a3',
+      'reference' => 'dc960a912984efb74d0a90222870c72c87f10c91',
     ),
     'league/container' => 
     array (
@@ -299,12 +299,12 @@
     ),
     'phpseclib/phpseclib' => 
     array (
-      'pretty_version' => '3.0.6',
-      'version' => '3.0.6.0',
+      'pretty_version' => '3.0.9',
+      'version' => '3.0.9.0',
       'aliases' => 
       array (
       ),
-      'reference' => '906a5fafabe5e6ba51ef3dc65b2722a677908837',
+      'reference' => 'a127a5133804ff2f47ae629dd529b129da616ad7',
     ),
     'psr/cache' => 
     array (
@@ -365,12 +365,12 @@
     ),
     'psr/log' => 
     array (
-      'pretty_version' => '1.1.3',
-      'version' => '1.1.3.0',
+      'pretty_version' => '1.1.4',
+      'version' => '1.1.4.0',
       'aliases' => 
       array (
       ),
-      'reference' => '0f73288fd15629204f9d42b7055f72dacbe811fc',
+      'reference' => 'd49695b909c3b7628b6289db5479a1c204601f11',
     ),
     'psr/log-implementation' => 
     array (
@@ -456,7 +456,7 @@
       'aliases' => 
       array (
       ),
-      'reference' => '14d73c1ef089af6a51e95c4e07ea92562e2cc9d0',
+      'reference' => '3d0e626faff401142d7f215d858cc14e03d18c17',
     ),
   ),
 );

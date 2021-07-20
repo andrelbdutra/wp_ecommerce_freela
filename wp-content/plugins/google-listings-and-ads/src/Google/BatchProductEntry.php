@@ -3,7 +3,7 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\GoogleListingsAndAds\Google;
 
-use Google_Service_ShoppingContent_Product as GoogleProduct;
+use Google\Service\ShoppingContent\Product as GoogleProduct;
 use JsonSerializable;
 
 defined( 'ABSPATH' ) || exit;
@@ -52,10 +52,8 @@ class BatchProductEntry implements JsonSerializable {
 
 	/**
 	 * @return array
-	 *
-	 * phpcs:disable WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid
 	 */
-	public function jsonSerialize(): array {
+	public function jsonSerialize(): array { // phpcs:ignore WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid
 		$data = [ 'woocommerce_id' => $this->get_wc_product_id() ];
 
 		if ( null !== $this->get_google_product() ) {

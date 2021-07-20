@@ -9,12 +9,12 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareInterface;
 use Automattic\WooCommerce\GoogleListingsAndAds\Options\OptionsAwareTrait;
 use Google\Exception as GoogleException;
-use Google_Service_ShoppingContent as GoogleShoppingService;
-use Google_Service_ShoppingContent_Product as GoogleProduct;
-use Google_Service_ShoppingContent_ProductsCustomBatchRequest as GoogleBatchRequest;
-use Google_Service_ShoppingContent_ProductsCustomBatchRequestEntry as GoogleBatchRequestEntry;
-use Google_Service_ShoppingContent_ProductsCustomBatchResponse as GoogleBatchResponse;
-use Google_Service_ShoppingContent_ProductsCustomBatchResponseEntry as GoogleBatchResponseEntry;
+use Google\Service\ShoppingContent;
+use Google\Service\ShoppingContent\Product as GoogleProduct;
+use Google\Service\ShoppingContent\ProductsCustomBatchRequest as GoogleBatchRequest;
+use Google\Service\ShoppingContent\ProductsCustomBatchRequestEntry as GoogleBatchRequestEntry;
+use Google\Service\ShoppingContent\ProductsCustomBatchResponse as GoogleBatchResponse;
+use Google\Service\ShoppingContent\ProductsCustomBatchResponseEntry as GoogleBatchResponseEntry;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -43,16 +43,16 @@ class GoogleProductService implements OptionsAwareInterface, Service {
 	protected const METHOD_INSERT = 'insert';
 
 	/**
-	 * @var GoogleShoppingService
+	 * @var ShoppingContent
 	 */
 	protected $shopping_service;
 
 	/**
 	 * GoogleProductService constructor.
 	 *
-	 * @param GoogleShoppingService $shopping_service
+	 * @param ShoppingContent $shopping_service
 	 */
-	public function __construct( GoogleShoppingService $shopping_service ) {
+	public function __construct( ShoppingContent $shopping_service ) {
 		$this->shopping_service = $shopping_service;
 	}
 
@@ -102,9 +102,6 @@ class GoogleProductService implements OptionsAwareInterface, Service {
 	 * @throws GoogleException If there are any Google API errors.
 	 */
 	public function get_batch( array $products ): BatchProductResponse {
-		if ( empty( $products ) ) {
-			return new BatchProductResponse( [], [] );
-		}
 		return $this->custom_batch( $products, self::METHOD_GET );
 	}
 
@@ -117,9 +114,6 @@ class GoogleProductService implements OptionsAwareInterface, Service {
 	 * @throws GoogleException If there are any Google API errors.
 	 */
 	public function insert_batch( array $products ): BatchProductResponse {
-		if ( empty( $products ) ) {
-			return new BatchProductResponse( [], [] );
-		}
 		return $this->custom_batch( $products, self::METHOD_INSERT );
 	}
 
@@ -132,9 +126,6 @@ class GoogleProductService implements OptionsAwareInterface, Service {
 	 * @throws GoogleException If there are any Google API errors.
 	 */
 	public function delete_batch( array $products ): BatchProductResponse {
-		if ( empty( $products ) ) {
-			return new BatchProductResponse( [], [] );
-		}
 		return $this->custom_batch( $products, self::METHOD_DELETE );
 	}
 
@@ -148,6 +139,10 @@ class GoogleProductService implements OptionsAwareInterface, Service {
 	 * @throws GoogleException If there are any Google API errors.
 	 */
 	protected function custom_batch( array $products, string $method ): BatchProductResponse {
+		if ( empty( $products ) ) {
+			return new BatchProductResponse( [], [] );
+		}
+
 		$merchant_id     = $this->options->get_merchant_id();
 		$request_entries = [];
 
@@ -197,9 +192,8 @@ class GoogleProductService implements OptionsAwareInterface, Service {
 		 * @var GoogleBatchResponseEntry $response
 		 */
 		foreach ( $responses as $response ) {
-			// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			// Product entry is mapped to batchId when sending the request
-			$product_entry = $batch_id_product_map[ $response->batchId ];
+			$product_entry = $batch_id_product_map[ $response->batchId ]; // phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			$wc_product_id = $product_entry->get_wc_product_id();
 			if ( $product_entry instanceof BatchProductRequestEntry ) {
 				$google_product_id = $product_entry->get_product()->getId();

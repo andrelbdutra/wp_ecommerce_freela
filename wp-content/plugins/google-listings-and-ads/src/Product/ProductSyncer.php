@@ -3,14 +3,15 @@ declare( strict_types=1 );
 
 namespace Automattic\WooCommerce\GoogleListingsAndAds\Product;
 
+use Automattic\WooCommerce\GoogleListingsAndAds\Exception\InvalidValue;
 use Automattic\WooCommerce\GoogleListingsAndAds\Google\BatchInvalidProductEntry;
 use Automattic\WooCommerce\GoogleListingsAndAds\Google\BatchProductIDRequestEntry;
 use Automattic\WooCommerce\GoogleListingsAndAds\Google\BatchProductRequestEntry;
 use Automattic\WooCommerce\GoogleListingsAndAds\Google\BatchProductResponse;
 use Automattic\WooCommerce\GoogleListingsAndAds\Google\GoogleProductService;
 use Automattic\WooCommerce\GoogleListingsAndAds\Infrastructure\Service;
-use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\MerchantCenterAwareInterface;
-use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\MerchantCenterAwareTrait;
+use Automattic\WooCommerce\GoogleListingsAndAds\MerchantCenter\MerchantCenterService;
+use Automattic\WooCommerce\GoogleListingsAndAds\Proxies\WC;
 use Exception;
 use WC_Product;
 
@@ -21,12 +22,10 @@ defined( 'ABSPATH' ) || exit;
  *
  * @package Automattic\WooCommerce\GoogleListingsAndAds\Product
  */
-class ProductSyncer implements Service, MerchantCenterAwareInterface {
+class ProductSyncer implements Service {
 
 	public const FAILURE_THRESHOLD        = 5;         // Number of failed attempts allowed per FAILURE_THRESHOLD_WINDOW
 	public const FAILURE_THRESHOLD_WINDOW = '3 hours'; // PHP supported Date and Time format: https://www.php.net/manual/en/datetime.formats.php
-
-	use MerchantCenterAwareTrait;
 
 	/**
 	 * @var GoogleProductService
@@ -44,16 +43,36 @@ class ProductSyncer implements Service, MerchantCenterAwareInterface {
 	protected $product_helper;
 
 	/**
+	 * @var MerchantCenterService
+	 */
+	protected $merchant_center;
+
+	/**
+	 * @var WC
+	 */
+	protected $wc;
+
+	/**
 	 * ProductSyncer constructor.
 	 *
-	 * @param GoogleProductService $google_service
-	 * @param BatchProductHelper   $batch_helper
-	 * @param ProductHelper        $product_helper
+	 * @param GoogleProductService  $google_service
+	 * @param BatchProductHelper    $batch_helper
+	 * @param ProductHelper         $product_helper
+	 * @param MerchantCenterService $merchant_center
+	 * @param WC                    $wc
 	 */
-	public function __construct( GoogleProductService $google_service, BatchProductHelper $batch_helper, ProductHelper $product_helper ) {
-		$this->google_service = $google_service;
-		$this->batch_helper   = $batch_helper;
-		$this->product_helper = $product_helper;
+	public function __construct(
+		GoogleProductService $google_service,
+		BatchProductHelper $batch_helper,
+		ProductHelper $product_helper,
+		MerchantCenterService $merchant_center,
+		WC $wc
+	) {
+		$this->google_service  = $google_service;
+		$this->batch_helper    = $batch_helper;
+		$this->product_helper  = $product_helper;
+		$this->merchant_center = $merchant_center;
+		$this->wc              = $wc;
 	}
 
 	/**
@@ -121,14 +140,23 @@ class ProductSyncer implements Service, MerchantCenterAwareInterface {
 		do_action(
 			'woocommerce_gla_debug_message',
 			sprintf(
-				"Submitted %s products:\n%s\n%s Failed:\n%s",
+				"Submitted %s products:\n%s",
 				count( $updated_products ),
-				json_encode( $updated_products ),
-				count( $invalid_products ),
-				json_encode( $invalid_products )
+				json_encode( $updated_products )
 			),
 			__METHOD__
 		);
+		if ( ! empty( $invalid_products ) ) {
+			do_action(
+				'woocommerce_gla_debug_message',
+				sprintf(
+					"%s products failed to sync with Merchant Center:\n%s",
+					count( $invalid_products ),
+					json_encode( $invalid_products )
+				),
+				__METHOD__
+			);
+		}
 
 		return new BatchProductResponse( $updated_products, $invalid_products );
 	}
@@ -198,14 +226,23 @@ class ProductSyncer implements Service, MerchantCenterAwareInterface {
 		do_action(
 			'woocommerce_gla_debug_message',
 			sprintf(
-				"Deleted %s products:\n%s\n%s Failed:\n%s",
+				"Deleted %s products:\n%s",
 				count( $deleted_products ),
 				json_encode( $deleted_products ),
-				count( $invalid_products ),
-				json_encode( $invalid_products )
 			),
 			__METHOD__
 		);
+		if ( ! empty( $invalid_products ) ) {
+			do_action(
+				'woocommerce_gla_debug_message',
+				sprintf(
+					"Failed to delete %s products from Merchant Center:\n%s",
+					count( $invalid_products ),
+					json_encode( $invalid_products )
+				),
+				__METHOD__
+			);
+		}
 
 		return new BatchProductResponse( $deleted_products, $invalid_products );
 	}
@@ -217,6 +254,17 @@ class ProductSyncer implements Service, MerchantCenterAwareInterface {
 	 */
 	public static function get_supported_product_types(): array {
 		return (array) apply_filters( 'woocommerce_gla_supported_product_types', [ 'simple', 'variable', 'variation' ] );
+	}
+
+	/**
+	 * Return the list of product types we will hide functionality for (default none).
+	 *
+	 * @since 1.2.0
+	 *
+	 * @return array
+	 */
+	public static function get_hidden_product_types(): array {
+		return (array) apply_filters( 'woocommerce_gla_hidden_product_types', [] );
 	}
 
 	/**
@@ -243,7 +291,7 @@ class ProductSyncer implements Service, MerchantCenterAwareInterface {
 		foreach ( $invalid_products as $invalid_product ) {
 			$google_product_id = $invalid_product->get_google_product_id();
 			$wc_product_id     = $invalid_product->get_wc_product_id();
-			$wc_product        = wc_get_product( $wc_product_id );
+			$wc_product        = $this->wc->maybe_get_product( $wc_product_id );
 			if ( ! $wc_product instanceof WC_Product || empty( $google_product_id ) ) {
 				continue;
 			}
@@ -288,8 +336,8 @@ class ProductSyncer implements Service, MerchantCenterAwareInterface {
 	 * @throws ProductSyncerException If Google Merchant Center is not set up and connected.
 	 */
 	protected function validate_merchant_center_setup(): void {
-		if ( ! $this->merchant_center->is_setup_complete() ) {
-			do_action( 'woocommerce_gla_error', 'Can not sync any products before setting up Google Merchant Center.', __METHOD__ );
+		if ( ! $this->merchant_center->is_connected() ) {
+			do_action( 'woocommerce_gla_error', 'Cannot sync any products before setting up Google Merchant Center.', __METHOD__ );
 
 			throw new ProductSyncerException( __( 'Google Merchant Center has not been set up correctly. Please review your configuration.', 'google-listings-and-ads' ) );
 		}

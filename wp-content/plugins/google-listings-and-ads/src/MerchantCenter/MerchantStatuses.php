@@ -20,7 +20,7 @@ use Automattic\WooCommerce\GoogleListingsAndAds\Product\ProductRepository;
 use Automattic\WooCommerce\GoogleListingsAndAds\Product\ProductSyncer;
 use Automattic\WooCommerce\GoogleListingsAndAds\Value\ChannelVisibility;
 use Automattic\WooCommerce\GoogleListingsAndAds\Value\MCStatus;
-use Google_Service_ShoppingContent_ProductStatus as Shopping_Product_Status;
+use Google\Service\ShoppingContent\ProductStatus as GoogleProductStatus;
 use DateTime;
 use Exception;
 
@@ -62,9 +62,9 @@ class MerchantStatuses implements Service, ContainerAwareInterface {
 	public const SEVERITY_ERROR   = 'error';
 
 	/**
-	 * @var DateTime $current_time For cache age operations.
+	 * @var DateTime $cache_created_time For cache age operations.
 	 */
-	protected $current_time;
+	protected $cache_created_time;
 
 	/**
 	 * @var array Reference array of countries associated to each product+issue combo.
@@ -93,7 +93,7 @@ class MerchantStatuses implements Service, ContainerAwareInterface {
 	 * MerchantStatuses constructor.
 	 */
 	public function __construct() {
-		$this->current_time = new DateTime();
+		$this->cache_created_time = new DateTime();
 	}
 
 	/**
@@ -163,9 +163,16 @@ class MerchantStatuses implements Service, ContainerAwareInterface {
 			return;
 		}
 
-		// Save a request if no MC account connected.
-		if ( ! $this->container->get( MerchantCenterService::class )->is_connected() ) {
-			throw new Exception( __( 'No Merchant Center account connected.', 'google-listings-and-ads' ) );
+		// Save a request if accounts are not connected.
+		$mc_service = $this->container->get( MerchantCenterService::class );
+		if ( ! $mc_service->is_connected() ) {
+
+			// Return a 401 to redirect to reconnect flow if the Google account is not connected.
+			if ( ! $mc_service->is_google_connected() ) {
+				throw new Exception( __( 'Google account is not connected.', 'google-listings-and-ads' ), 401 );
+			}
+
+			throw new Exception( __( 'Merchant Center account is not set up.', 'google-listings-and-ads' ) );
 		}
 
 		$this->mc_statuses = [];
@@ -188,10 +195,11 @@ class MerchantStatuses implements Service, ContainerAwareInterface {
 		// Update pre-sync product validation issues.
 		$this->refresh_presync_product_issues();
 
+		// Include any custom merchant issues.
+		$this->refresh_custom_merchant_issues();
+
 		// Delete stale issues.
-		$delete_before = clone $this->current_time;
-		$delete_before->modify( '-' . $this->get_status_lifetime() . ' seconds' );
-		$this->container->get( MerchantIssueTable::class )->delete_stale( $delete_before );
+		$this->container->get( MerchantIssueTable::class )->delete_stale( $this->cache_created_time );
 	}
 
 	/**
@@ -292,7 +300,7 @@ class MerchantStatuses implements Service, ContainerAwareInterface {
 	 *
 	 * @param string[] $google_ids
 	 *
-	 * @return Shopping_Product_Status[] Statuses found to be valid.
+	 * @return GoogleProductStatus[] Statuses found to be valid.
 	 */
 	protected function filter_valid_statuses( array $google_ids ): array {
 		/** @var Merchant $merchant */
@@ -357,7 +365,7 @@ class MerchantStatuses implements Service, ContainerAwareInterface {
 		/** @var Merchant $merchant */
 		$merchant       = $this->container->get( Merchant::class );
 		$account_issues = [];
-		$created_at     = $this->current_time->format( 'Y-m-d H:i:s' );
+		$created_at     = $this->cache_created_time->format( 'Y-m-d H:i:s' );
 		foreach ( $merchant->get_accountstatus()->getAccountLevelIssues() as $issue ) {
 			$account_issues[] = [
 				'product_id' => 0,
@@ -378,16 +386,33 @@ class MerchantStatuses implements Service, ContainerAwareInterface {
 	}
 
 	/**
+	 * Custom issues can be added to the merchant issues table.
+	 *
+	 * @since 1.2.0
+	 */
+	protected function refresh_custom_merchant_issues() {
+		$custom_issues = apply_filters( 'woocommerce_gla_custom_merchant_issues', [], $this->cache_created_time );
+
+		if ( empty( $custom_issues ) ) {
+			return;
+		}
+
+		/** @var MerchantIssueQuery $issue_query */
+		$issue_query = $this->container->get( MerchantIssueQuery::class );
+		$issue_query->update_or_insert( $custom_issues );
+	}
+
+	/**
 	 * Retrieve all product-level issues and store them in the database.
 	 *
-	 * @param Shopping_Product_Status[] $validated_mc_statuses Product statuses of validated products.
+	 * @param GoogleProductStatus[] $validated_mc_statuses Product statuses of validated products.
 	 */
 	protected function refresh_product_issues( array $validated_mc_statuses ): void {
 		/** @var ProductHelper $product_helper */
 		$product_helper = $this->container->get( ProductHelper::class );
 
 		$product_issues = [];
-		$created_at     = $this->current_time->format( 'Y-m-d H:i:s' );
+		$created_at     = $this->cache_created_time->format( 'Y-m-d H:i:s' );
 		foreach ( $validated_mc_statuses as $product ) {
 			$wc_product_id = $product_helper->get_wc_product_id( $product->getProductId() );
 
@@ -453,7 +478,7 @@ class MerchantStatuses implements Service, ContainerAwareInterface {
 	protected function refresh_presync_product_issues(): void {
 		/** @var MerchantIssueQuery $issue_query */
 		$issue_query  = $this->container->get( MerchantIssueQuery::class );
-		$created_at   = $this->current_time->format( 'Y-m-d H:i:s' );
+		$created_at   = $this->cache_created_time->format( 'Y-m-d H:i:s' );
 		$issue_action = __( 'Update this attribute in your product data', 'google-listings-and-ads' );
 
 		/** @var ProductMetaQueryHelper $product_meta_query_helper */
@@ -470,11 +495,16 @@ class MerchantStatuses implements Service, ContainerAwareInterface {
 				continue;
 			}
 
-			$product_name = get_the_title( $product_id );
+			$product = get_post( $product_id );
+			// Don't store pre-sync errors for unpublished (draft, trashed) products.
+			if ( 'publish' !== get_post_status( $product ) ) {
+				continue;
+			}
+
 			foreach ( $presync_errors as $text ) {
 				$issue_parts      = $this->parse_presync_issue_text( $text );
 				$product_issues[] = [
-					'product'              => $product_name,
+					'product'              => $product->post_title,
 					'product_id'           => $product_id,
 					'code'                 => $issue_parts['code'],
 					'severity'             => self::SEVERITY_ERROR,
@@ -501,7 +531,7 @@ class MerchantStatuses implements Service, ContainerAwareInterface {
 	/**
 	 * Add the provided status counts to the overall totals.
 	 *
-	 * @param Shopping_Product_Status[] $validated_mc_statuses Product statuses of validated products.
+	 * @param GoogleProductStatus[] $validated_mc_statuses Product statuses of validated products.
 	 */
 	protected function sum_status_counts( array $validated_mc_statuses ): void {
 		/** @var ProductHelper $product_helper */
@@ -549,7 +579,7 @@ class MerchantStatuses implements Service, ContainerAwareInterface {
 		$product_statistics[ MCStatus::NOT_SYNCED ] = count( $product_repository->find_mc_not_synced_product_ids() );
 
 		$this->mc_statuses = [
-			'timestamp'  => $this->current_time->getTimestamp(),
+			'timestamp'  => $this->cache_created_time->getTimestamp(),
 			'statistics' => $product_statistics,
 		];
 
@@ -636,11 +666,11 @@ class MerchantStatuses implements Service, ContainerAwareInterface {
 	 * Return the product's shopping status in the Google Merchant Center.
 	 * Active, Pending, Disapproved, Expiring.
 	 *
-	 * @param Shopping_Product_Status $product_status
+	 * @param GoogleProductStatus $product_status
 	 *
 	 * @return string|null
 	 */
-	protected function get_product_shopping_status( Shopping_Product_Status $product_status ): ?string {
+	protected function get_product_shopping_status( GoogleProductStatus $product_status ): ?string {
 		$status = null;
 		foreach ( $product_status->getDestinationStatuses() as $d ) {
 			if ( 'SurfacesAcrossGoogle' === $d->getDestination() ) {
