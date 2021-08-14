@@ -1,4 +1,4 @@
-/*! elementor - v3.3.0 - 11-07-2021 */
+/*! elementor - v3.3.1 - 20-07-2021 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -3875,8 +3875,12 @@ var Container = /*#__PURE__*/function (_ArgsObject) {
             return;
           }
 
-          var container = view.container;
-          container.parent.children[view._index] = container;
+          var container = view.container; // Since the way 'global-widget' rendered, it does not have parent sometimes.
+
+          if (container.parent.children) {
+            container.parent.children[view._index] = container;
+          }
+
           container.handleChildrenRecursive();
         });
       } else {

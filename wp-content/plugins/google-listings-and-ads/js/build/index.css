@@ -23,7 +23,6 @@
 .gla-title-button-layout .title{margin-bottom:0}
 .gla_disabled_div.gla_disabled_div__disabled{filter:opacity(0.5)}
 .gla-account-select-control .components-base-control__field{margin-bottom:0}
-.app-text-button.components-button{padding:0;border:none;height:inherit;box-shadow:none;outline:none}.app-text-button.components-button:hover:not(:disabled){box-shadow:none;outline:none}.app-text-button.components-button:focus:not(:disabled){box-shadow:0 0 0 1.5px var(--wp-admin-theme-color);outline:1px solid transparent}
 .gla-reclaim-url-fail-card__title{color:#d94f4f}
 .gla-reclaim-url-card .gla-content-button-layout{align-items:flex-start}.gla-reclaim-url-card__warning{color:#cc1818;margin-bottom:8px}
 .gla-switch-url-card div.buttons{display:flex;flex-direction:column;gap:calc(var(--main-gap) / 3)}.gla-switch-url-card div.buttons button{justify-content:center}

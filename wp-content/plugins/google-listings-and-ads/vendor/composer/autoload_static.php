@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitf071ae0bd1cba37dda4b34413db935ac
+class ComposerStaticInit7008a68d0d39ca1c77be0af0af41cc4f
 {
     public static $files = array (
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
@@ -381,6 +381,7 @@ class ComposerStaticInitf071ae0bd1cba37dda4b34413db935ac
         'Automattic\\WooCommerce\\GoogleListingsAndAds\\DB\\Query\\ShippingTimeQuery' => __DIR__ . '/../..' . '/src/DB/Query/ShippingTimeQuery.php',
         'Automattic\\WooCommerce\\GoogleListingsAndAds\\DB\\Table' => __DIR__ . '/../..' . '/src/DB/Table.php',
         'Automattic\\WooCommerce\\GoogleListingsAndAds\\DB\\TableInterface' => __DIR__ . '/../..' . '/src/DB/TableInterface.php',
+        'Automattic\\WooCommerce\\GoogleListingsAndAds\\DB\\TableManager' => __DIR__ . '/../..' . '/src/DB/TableManager.php',
         'Automattic\\WooCommerce\\GoogleListingsAndAds\\DB\\Table\\BudgetRecommendationTable' => __DIR__ . '/../..' . '/src/DB/Table/BudgetRecommendationTable.php',
         'Automattic\\WooCommerce\\GoogleListingsAndAds\\DB\\Table\\MerchantIssueTable' => __DIR__ . '/../..' . '/src/DB/Table/MerchantIssueTable.php',
         'Automattic\\WooCommerce\\GoogleListingsAndAds\\DB\\Table\\ShippingRateTable' => __DIR__ . '/../..' . '/src/DB/Table/ShippingRateTable.php',
@@ -753,7 +754,6 @@ class ComposerStaticInitf071ae0bd1cba37dda4b34413db935ac
         'Automattic\\WooCommerce\\GoogleListingsAndAds\\View\\PHPView' => __DIR__ . '/../..' . '/src/View/PHPView.php',
         'Automattic\\WooCommerce\\GoogleListingsAndAds\\View\\PHPViewFactory' => __DIR__ . '/../..' . '/src/View/PHPViewFactory.php',
         'Automattic\\WooCommerce\\GoogleListingsAndAds\\View\\ViewException' => __DIR__ . '/../..' . '/src/View/ViewException.php',
-        'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Firebase\\JWT\\BeforeValidException' => __DIR__ . '/..' . '/firebase/php-jwt/src/BeforeValidException.php',
         'Firebase\\JWT\\ExpiredException' => __DIR__ . '/..' . '/firebase/php-jwt/src/ExpiredException.php',
         'Firebase\\JWT\\JWK' => __DIR__ . '/..' . '/firebase/php-jwt/src/JWK.php',
@@ -5500,7 +5500,9 @@ class ComposerStaticInitf071ae0bd1cba37dda4b34413db935ac
         'Symfony\\Component\\Validator\\Mapping\\PropertyMetadataInterface' => __DIR__ . '/..' . '/symfony/validator/Mapping/PropertyMetadataInterface.php',
         'Symfony\\Component\\Validator\\Mapping\\TraversalStrategy' => __DIR__ . '/..' . '/symfony/validator/Mapping/TraversalStrategy.php',
         'Symfony\\Component\\Validator\\ObjectInitializerInterface' => __DIR__ . '/..' . '/symfony/validator/ObjectInitializerInterface.php',
+        'Symfony\\Component\\Validator\\Test\\AssertingContextualValidator' => __DIR__ . '/..' . '/symfony/validator/Test/ConstraintValidatorTestCase.php',
         'Symfony\\Component\\Validator\\Test\\ConstraintValidatorTestCase' => __DIR__ . '/..' . '/symfony/validator/Test/ConstraintValidatorTestCase.php',
+        'Symfony\\Component\\Validator\\Test\\ConstraintViolationAssertion' => __DIR__ . '/..' . '/symfony/validator/Test/ConstraintValidatorTestCase.php',
         'Symfony\\Component\\Validator\\Util\\PropertyPath' => __DIR__ . '/..' . '/symfony/validator/Util/PropertyPath.php',
         'Symfony\\Component\\Validator\\Validation' => __DIR__ . '/..' . '/symfony/validator/Validation.php',
         'Symfony\\Component\\Validator\\ValidatorBuilder' => __DIR__ . '/..' . '/symfony/validator/ValidatorBuilder.php',
@@ -5857,9 +5859,9 @@ class ComposerStaticInitf071ae0bd1cba37dda4b34413db935ac
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitf071ae0bd1cba37dda4b34413db935ac::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitf071ae0bd1cba37dda4b34413db935ac::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitf071ae0bd1cba37dda4b34413db935ac::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit7008a68d0d39ca1c77be0af0af41cc4f::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit7008a68d0d39ca1c77be0af0af41cc4f::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInit7008a68d0d39ca1c77be0af0af41cc4f::$classMap;
 
         }, null, ClassLoader::class);
     }

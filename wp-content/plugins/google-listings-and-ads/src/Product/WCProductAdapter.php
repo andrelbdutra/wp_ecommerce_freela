@@ -156,13 +156,15 @@ class WCProductAdapter extends GoogleProduct implements Validatable {
 	 * @return string
 	 */
 	protected function get_wc_product_description(): string {
-		$description = ! empty( $this->wc_product->get_description() ) ?
+		$use_short_description = apply_filters( 'woocommerce_gla_use_short_description', false );
+
+		$description = ! empty( $this->wc_product->get_description() ) && ! $use_short_description ?
 			$this->wc_product->get_description() :
 			$this->wc_product->get_short_description();
 
 		// prepend the parent product description to the variation product
 		if ( $this->is_variation() ) {
-			$parent_description = ! empty( $this->parent_wc_product->get_description() ) ?
+			$parent_description = ! empty( $this->parent_wc_product->get_description() ) && ! $use_short_description ?
 				$this->parent_wc_product->get_description() :
 				$this->parent_wc_product->get_short_description();
 			$new_line           = ! empty( $description ) && ! empty( $parent_description ) ? PHP_EOL : '';
@@ -177,7 +179,15 @@ class WCProductAdapter extends GoogleProduct implements Validatable {
 			$description
 		);
 
-		return strip_shortcodes( wp_strip_all_tags( $description ) );
+		// Strip out invalid HTML tags (e.g. script, style, canvas, etc.) along with attributes of all tags.
+		$valid_html_tags   = array_keys( wp_kses_allowed_html( 'post' ) );
+		$kses_allowed_tags = array_fill_keys( $valid_html_tags, [] );
+		$description       = wp_kses( $description, $kses_allowed_tags );
+
+		// Strip out active shortcodes
+		$description = strip_shortcodes( $description );
+
+		return apply_filters( 'woocommerce_gla_product_attribute_value_description', $description, $this->wc_product );
 	}
 
 	/**

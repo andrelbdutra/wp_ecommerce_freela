@@ -1,4 +1,4 @@
-/*! elementor - v3.3.0 - 11-07-2021 */
+/*! elementor - v3.3.1 - 20-07-2021 */
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
@@ -11948,6 +11948,8 @@ var _react = _interopRequireWildcard(__webpack_require__(/*! react */ "react"));
 
 var _stringify = _interopRequireDefault(__webpack_require__(/*! @babel/runtime-corejs2/core-js/json/stringify */ "../node_modules/@babel/runtime-corejs2/core-js/json/stringify.js"));
 
+__webpack_require__(/*! core-js/modules/es6.regexp.match.js */ "../node_modules/core-js/modules/es6.regexp.match.js");
+
 var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime-corejs2/helpers/slicedToArray */ "../node_modules/@babel/runtime-corejs2/helpers/slicedToArray.js"));
 
 var _router = __webpack_require__(/*! @reach/router */ "../node_modules/@reach/router/es/index.js");
@@ -11965,6 +11967,8 @@ var _inlineLink = _interopRequireDefault(__webpack_require__(/*! elementor-app/u
 var _notice = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/molecules/notice */ "../core/app/assets/js/ui/molecules/notice.js"));
 
 var _dropZone = _interopRequireDefault(__webpack_require__(/*! elementor-app/organisms/drop-zone */ "../core/app/assets/js/organisms/drop-zone.js"));
+
+var _button = _interopRequireDefault(__webpack_require__(/*! elementor-app/ui/molecules/button */ "../core/app/assets/js/ui/molecules/button.js"));
 
 var _useAjax2 = _interopRequireDefault(__webpack_require__(/*! elementor-app/hooks/use-ajax */ "../core/app/assets/js/hooks/use-ajax.js"));
 
@@ -11985,6 +11989,7 @@ function ImportKit() {
       setIsLoading = _useState4[1],
       context = (0, _react.useContext)(_contextProvider.Context),
       navigate = (0, _router.useNavigate)(),
+      referrer = location.hash.match('referrer=([^&]+)'),
       resetImportProcess = function resetImportProcess() {
     context.dispatch({
       type: 'SET_FILE',
@@ -12042,7 +12047,14 @@ function ImportKit() {
     type: "import"
   }, /*#__PURE__*/_react.default.createElement("section", {
     className: "e-app-import"
-  }, /*#__PURE__*/_react.default.createElement(_pageHeader.default, {
+  }, 'kit-library' === (referrer === null || referrer === void 0 ? void 0 : referrer[1]) && /*#__PURE__*/_react.default.createElement(_button.default, {
+    className: "e-app-import__back-to-library",
+    icon: "eicon-chevron-left",
+    text: __('Back to Kit Library', 'elementor'),
+    onClick: function onClick() {
+      return navigate('/kit-library');
+    }
+  }), /*#__PURE__*/_react.default.createElement(_pageHeader.default, {
     heading: __('Import a Template Kit', 'elementor'),
     description: [__('Upload a file with templates, site settings, content, etc., and apply them to your site automatically.', 'elementor'), getLearnMoreLink()]
   }), /*#__PURE__*/_react.default.createElement(_notice.default, {
@@ -13621,6 +13633,8 @@ var _toConsumableArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/
 
 var _objectSpread2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime-corejs2/helpers/objectSpread2 */ "../node_modules/@babel/runtime-corejs2/helpers/objectSpread2.js"));
 
+__webpack_require__(/*! core-js/modules/es6.regexp.match.js */ "../node_modules/core-js/modules/es6.regexp.match.js");
+
 var _slicedToArray2 = _interopRequireDefault(__webpack_require__(/*! @babel/runtime-corejs2/helpers/slicedToArray */ "../node_modules/@babel/runtime-corejs2/helpers/slicedToArray.js"));
 
 var _page = _interopRequireDefault(__webpack_require__(/*! elementor-app/layout/page */ "../core/app/assets/js/layout/page.js"));
@@ -13638,6 +13652,7 @@ function Layout(props) {
       _useState2 = (0, _slicedToArray2.default)(_useState, 2),
       showInfoModal = _useState2[0],
       setShowInfoModal = _useState2[1],
+      referrer = location.hash.match('referrer=([^&]+)'),
       getContent = function getContent() {
     var infoModalProps = {
       show: showInfoModal,
@@ -13658,10 +13673,10 @@ function Layout(props) {
     content: getContent(),
     footer: props.footer
   },
-      moduleAdminTab = '#tab-import-export-kit'; // Targeting the return_url value to the import-export dedicated admin tab.
+      moduleAdminTab = '#tab-import-export-kit'; // Targeting the return_url value to the import-export dedicated admin tab (only when there is no specific referrer).
 
 
-  if (-1 === elementorAppConfig.return_url.indexOf(moduleAdminTab)) {
+  if (!referrer && -1 === elementorAppConfig.return_url.indexOf(moduleAdminTab)) {
     elementorAppConfig.return_url += moduleAdminTab;
   }
 

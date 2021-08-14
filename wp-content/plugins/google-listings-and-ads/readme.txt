@@ -2,9 +2,9 @@
 Contributors: automattic, google, woocommerce
 Tags: woocommerce, google, listings, ads
 Requires at least: 5.5
-Tested up to: 5.7
+Tested up to: 5.8
 Requires PHP: 7.3
-Stable tag: 1.2.1
+Stable tag: 1.3.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -115,6 +115,22 @@ Yes, you can run both at the same time, and we recommend it! In the US, advertis
 
 == Changelog ==
 
+= 1.3.0 - 2021-07-27 =
+* Fix - Bump WordPress tested version to 5.8.
+* Fix - Code formatting with Prettier.
+* Fix - Disable the "Complete setup" button if the free shipping price is not yet entered when setting up Merchant Center for the first time.
+* Fix - Fix: add eslint-plugin-import to help catch JavaScript import errors.
+* Fix - Import `Button` from `@wordpress/components` in Switch URL flow.
+* Fix - Remove unused code.
+* Fix - Shows a Jetpack connected success text instead of blank when viewing the onboarding setup and the settings pages as a non jetpack owner account.
+* Fix - Skip orphaned variations instead of throwing errors when syncing products.
+* Tweak - Add filters for adjusting description.
+* Tweak - Allow safe HTML tags for product descriptions.
+* Tweak - Replaced `<AppTextButton>` with WP's `<Button isLink>`.
+* Tweak - Use @wordpress/prettier-config package.
+* Update - Optionally clean up plugin data on uninstall.
+* Update - Stop syncing invisible products and variations.
+
 = 1.2.1 - 2021-07-15 =
 * Fix - Made Forms submit and change behavior work with WooCommerce >= 5.5 (WooCommerce Admin >= 2.4.0).
 
@@ -154,35 +170,5 @@ Yes, you can run both at the same time, and we recommend it! In the US, advertis
 * Update - Switch apiclient services to namespaces.
 * Update - Version 10.0 of the Google Ads library.
 * Update - Version 2.10 of the apiclient library.
-
-= 1.1.0 - 2021-06-23 =
-* Fix - Adds warning message and checkbox for reclaiming URL in Google Merchant Center account connection setup.
-* Fix - Align not synced product stats.
-* Fix - Automatically set default values for Setup MC and Edit Free Listings' Target Audience.
-* Fix - Cancel the focus from the "Remove" links after removing a program from the programs table.
-* Fix - Catch invalid product ID.
-* Fix - Cleanup target countries per product.
-* Fix - Clear product stats cache on every product sync .
-* Fix - Combine the "flat" and "manual" options of shipping rate and time in the MC setup flow to avoid possible errors caused by inconsistent shipping setup logic.
-* Fix - Correct formatting string of "day" for status box on the Product Feed page.
-* Fix - Handle null postmeta values gracefully.
-* Fix - Include the Ads account currency when checking the status.
-* Fix - Prevent conflicts when storing the channel visibility value.
-* Fix - Resolve Guzzle Conflict with other plugins.
-* Fix - Strip shortcodes used in the product description when syncing to Google.
-* Fix - The incorrect enabled state after removing a disabled program from the programs table.
-* Fix - Update deprecated `stylelint-config-wordpress` to `@wordpress/stylelint-config@19.0.4`,.
-* Fix - Use WooCommerce CRUD class methods to handle metadata.
-* Fix - Use batch productstatuses.
-* Fix - Use get_home_url for retrieving the site URL.
-* Fix - Use product's short description if no description is set.
-* Tweak - Optimize product queries.
-* Tweak - Reduce the default productstatus batch size.
-* Tweak - Set batch size to 100 for the "update all products" job.
-* Tweak - Show "Unavailable" and more descriptive tooltip when Google reports API fails.
-* Tweak - Standardize action and filter hook prefix.
-* Tweak - Use target countries as shipping destinations.
-* Tweak - WC 5.4 compatibility.
-* Update - Increase required minimum WordPress and WooCommerce versions.
 
 [See changelog for all versions](https://raw.githubusercontent.com/woocommerce/google-listings-and-ads/trunk/changelog.txt).

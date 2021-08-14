@@ -118,16 +118,16 @@ class ChannelVisibilityMetaBox extends SubmittableMetaBox {
 	 * @return array
 	 */
 	protected function get_view_context( WP_Post $post, array $args ): array {
-		$product_id = $post->ID;
+		$product_id = absint( $post->ID );
 		$product    = $this->product_helper->get_wc_product( $product_id );
 
 		return [
-			'field_id'    => $this->get_visibility_field_id(),
-			'product_id'  => $product_id,
-			'product'     => $product,
-			'visibility'  => $this->product_helper->get_visibility( $product ),
-			'sync_status' => $this->meta_handler->get_sync_status( $product ),
-			'issues'      => $this->product_helper->get_validation_errors( $product ),
+			'field_id'           => $this->get_visibility_field_id(),
+			'product_id'         => $product_id,
+			'product'            => $product,
+			'channel_visibility' => $this->product_helper->get_channel_visibility( $product ),
+			'sync_status'        => $this->meta_handler->get_sync_status( $product ),
+			'issues'             => $this->product_helper->get_validation_errors( $product ),
 		];
 	}
 
