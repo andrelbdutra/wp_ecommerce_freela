@@ -3,7 +3,7 @@ Contributors: tomeraharon, galdub, premio
 Tags:floating bar, notification bar, menu, header, sticky menu, sticky header, floating menu, floating navigation menu, navigation menu, navigation, sticky navigation menu, welcome bar, hello bar, top bar, sticky bar
 Requires at least: 3.5.1
 Tested up to: 5.8
-Stable tag: 2.5.4
+Stable tag: 2.5.6
 License: GPLv2 or later
 
 Create a beautiful welcome notification bar. This sticky menu plugin will also make your menu or header stick to the top of page, when scrolled down and up.
@@ -268,6 +268,10 @@ After installing the plugin, you’ll have the option to turn on the welcome bar
 
 
 == Changelog ==
+= 2.5.6 =
+Z-index welcome bar fix
+= 2.5.5 =
+Fixed notification bar & WordPress admin panel bar overlap bug
 = 2.5.4 =
 Poptin support was added, you can now launch Poptin pop ups
 = 2.5.3 =

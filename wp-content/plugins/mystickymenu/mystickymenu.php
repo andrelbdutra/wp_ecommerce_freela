@@ -3,7 +3,7 @@
 Plugin Name: myStickymenu
 Plugin URI: https://premio.io/
 Description: Simple sticky (fixed on top) menu implementation for navigation menu and Welcome bar for announcements and promotion. After install go to Settings / myStickymenu and change Sticky Class to .your_navbar_class or #your_navbar_id.
-Version: 2.5.4
+Version: 2.5.6
 Author: Premio
 Author URI: https://premio.io/downloads/mystickymenu/
 Text Domain: mystickymenu
@@ -12,7 +12,7 @@ License: GPLv2 or later
 */
 
 defined('ABSPATH') or die("Cannot access pages directly.");
-define( 'MYSTICKY_VERSION', '2.5.4' );
+define( 'MYSTICKY_VERSION', '2.5.6' );
 define('MYSTICKYMENU_URL', plugins_url('/', __FILE__));  // Define Plugin URL
 define('MYSTICKYMENU_PATH', plugin_dir_path(__FILE__));  // Define Plugin Directory Path
 

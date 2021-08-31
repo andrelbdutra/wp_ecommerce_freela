@@ -1033,7 +1033,11 @@ function mysticky_welcome_bar_frontend(){
 	<script>
 
 	jQuery(document).ready(function($){
-		var mysticky_welcomebar_height = jQuery( '.mysticky-welcomebar-fixed' ).outerHeight();
+		var adminBarHeight = 0;
+		if ( $("#wpadminbar").length != 0 ){
+			var adminBarHeight = $('#wpadminbar').height();
+		}
+		var mysticky_welcomebar_height = adminBarHeight + jQuery( '.mysticky-welcomebar-fixed' ).outerHeight();
 		if( jQuery( '.mysticky-welcomebar-fixed' ).data('position') == 'top' ) {
 			jQuery( '.mysticky-welcomebar-entry-effect-slide-in.mysticky-welcomebar-fixed' ).css( 'top', '-' + mysticky_welcomebar_height + 'px' );
 		} else {
@@ -1068,9 +1072,10 @@ function mysticky_welcome_bar_frontend(){
 						setTimeout(function(){
 							jQuery( '.mysticky-welcomebar-fixed' ).addClass( 'mysticky-welcomebar-animation' );
 							$( '.mysticky-welcomebar-fixed' ).addClass( 'entry-effect' );
-							if ( welcombar_position == 'top' ) {
+							if ( welcombar_position == 'top' ) {								
+								
 								jQuery( '.mysticky-welcomebar-fixed' ).addClass( 'mysticky-welcomebar-animation' );
-								jQuery( '.mysticky-welcomebar-fixed' ).css( 'top', '0' );
+								jQuery( '.mysticky-welcomebar-fixed' ).css( 'top', (adminBarHeight + 0) + 'px' );
 								jQuery( '.mysticky-welcomebar-fixed' ).css( 'opacity', '1' );
 								$( 'html' ).css( 'margin-bottom', '' );
 								jQuery( '#mysticky_divi_style' ).remove();
@@ -1100,9 +1105,9 @@ function mysticky_welcome_bar_frontend(){
 							jQuery( '.mysticky-welcomebar-fixed' ).addClass( 'mysticky-welcomebar-animation' );
 							$( '.mysticky-welcomebar-fixed' ).addClass( 'entry-effect' );
 							jQuery( '#mysticky_divi_style' ).remove();
-							jQuery( '.et_fixed_nav #top-header' ).css( 'top', '' );
+							jQuery( '.et_fixed_nav #top-header' ).css( 'top', '' );							
 							if ( welcombar_position == 'top' ) {
-								jQuery( '.mysticky-welcomebar-fixed' ).css( 'top', '0' );
+								jQuery( '.mysticky-welcomebar-fixed' ).css( 'top', ( adminBarHeight + 0) + 'px' );
 								jQuery( '.mysticky-welcomebar-fixed' ).css( 'opacity', '1' );
 								$( 'html' ).css( 'margin-bottom', '' );
 								$( 'html' ).attr( 'style', 'margin-top: ' + mysticky_welcomebar_height + 'px !important' );
@@ -1149,7 +1154,7 @@ function mysticky_welcome_bar_frontend(){
 								jQuery( '#mysticky_divi_style' ).remove();
 								jQuery( '.et_fixed_nav #top-header' ).css( 'top', '' );
 								if ( welcombar_position == 'top' ) {
-									jQuery( '.mysticky-welcomebar-fixed' ).css( 'top', '0' );
+									jQuery( '.mysticky-welcomebar-fixed' ).css( 'top', ( adminBarHeight +  0) + 'px' );
 									jQuery( '.mysticky-welcomebar-fixed' ).css( 'opacity', '1' );
 									$( 'html' ).css( 'margin-bottom', '' );
 									$( 'html' ).attr( 'style', 'margin-top: ' + mysticky_welcomebar_height + 'px !important' );
@@ -1168,7 +1173,7 @@ function mysticky_welcome_bar_frontend(){
 								jQuery( '.mysticky-welcomebar-fixed' ).addClass( 'mysticky-welcomebar-animation' );
 								$( '.mysticky-welcomebar-fixed' ).addClass( 'entry-effect' );
 								if ( welcombar_position == 'top' ) {
-									jQuery( '.mysticky-welcomebar-fixed' ).css( 'top', '0' );
+									jQuery( '.mysticky-welcomebar-fixed' ).css( 'top', ( adminBarHeight + 0) + 'px' );
 									jQuery( '.mysticky-welcomebar-fixed' ).css( 'opacity', '1' );
 									$( 'html' ).css( 'margin-bottom', '' );
 									jQuery( '#mysticky_divi_style' ).remove();
@@ -1192,7 +1197,7 @@ function mysticky_welcome_bar_frontend(){
 			}
 		} );
 
-		jQuery(window).on( 'scroll', function(){
+		jQuery(window).on( 'scroll', function(){			
 			if( welcombar_aftersubmission == 'dont_show_welcomebar' ){
 				var welcomebar_storage = localStorage.getItem("welcomebar_close");
 			} else if( welcombar_aftersubmission == 'show_welcomebar_next_visit' ) {
@@ -1219,7 +1224,7 @@ function mysticky_welcome_bar_frontend(){
 								jQuery( '.mysticky-welcomebar-fixed' ).addClass( 'mysticky-welcomebar-animation' );
 								$( '.mysticky-welcomebar-fixed' ).addClass( 'entry-effect' );
 								if ( welcombar_position == 'top' ) {
-									jQuery( '.mysticky-welcomebar-fixed' ).css( 'top', '0' );
+									jQuery( '.mysticky-welcomebar-fixed' ).css( 'top', (adminBarHeight+ 0 ) + 'px' );
 									jQuery( '.mysticky-welcomebar-fixed' ).css( 'opacity', '1' );
 									$( 'html' ).css( 'margin-bottom', '' );
 									$( 'html' ).attr( 'style', 'margin-top: ' + mysticky_welcomebar_height + 'px !important' );
@@ -1237,7 +1242,7 @@ function mysticky_welcome_bar_frontend(){
 								jQuery( '.mysticky-welcomebar-fixed' ).addClass( 'mysticky-welcomebar-animation' );
 								$( '.mysticky-welcomebar-fixed' ).addClass( 'entry-effect' );
 								if ( welcombar_position == 'top' ) {
-									jQuery( '.mysticky-welcomebar-fixed' ).css( 'top', '0' );
+									jQuery( '.mysticky-welcomebar-fixed' ).css( 'top', ( adminBarHeight +0 ) + 'px' );
 									jQuery( '.mysticky-welcomebar-fixed' ).css( 'opacity', '1' );
 									$( 'html' ).css( 'margin-bottom', '' );
 									$( 'html' ).attr( 'style', 'margin-top: ' + mysticky_welcomebar_height + 'px !important' );
@@ -1293,9 +1298,24 @@ function mysticky_welcome_bar_frontend(){
 	});
 	function mystickyelements_present() {
 		var after_trigger 		  = jQuery( '.mysticky-welcomebar-fixed' ).data('after-triger');
-		var mystickyelements_show = jQuery( '.mystickyelements-fixed' ).length;
+		var mystickyelements_show = jQuery( '.mystickyelements-fixed' ).length;		
+		var welcombar_position 			  = jQuery( '.mysticky-welcomebar-fixed' ).data('position');
+		var adminBarHeight = 0;
+		if ( jQuery("#wpadminbar").length != 0 ){
+			var adminBarHeight = jQuery('#wpadminbar').height();
+		}
+		
+		if ( jQuery( window ).width() <= 600 && jQuery(window).scrollTop() != 0 && welcombar_position == 'top') {
+			jQuery( '.mysticky-welcomebar-fixed' ).css( 'top', '0px' );
+			var welcombar_height = jQuery( '.mysticky-welcomebar-fixed' ).outerHeight();
+			jQuery( '#mysticky-nav' ).css( 'top', welcombar_height + 'px' );
+		} else if ( welcombar_position == 'top' ) {
+			var mysticky_welcomebar_height = adminBarHeight + jQuery( '.mysticky-welcomebar-fixed' ).outerHeight();
+			jQuery( '.mysticky-welcomebar-fixed' ).css( 'top', ( adminBarHeight + 0) + 'px' );			
+			jQuery( '#mysticky-nav' ).css( 'top', mysticky_welcomebar_height + 'px' );
+		}
 		if( mystickyelements_show ) {
-			var welcombar_position 			  = jQuery( '.mysticky-welcomebar-fixed' ).data('position');
+			
 			var welcombar_height 			  = jQuery( '.mysticky-welcomebar-fixed' ).outerHeight();
 			var mystickyelements_height 	  = jQuery( '.mystickyelements-fixed' ).height();
 			var mystickyelements_total_height = welcombar_height + mystickyelements_height;
@@ -1857,6 +1877,9 @@ function mysticky_welcome_bar_frontend(){
 			.mysticky-welcomebar-fixed .mysticky-welcomebar-close {
 				right: 7px;
 			}
+		}
+		body.mysticky-welcomebar-apper #wpadminbar{
+			z-index:99999999;
 		}
 	</style>
 	<?php

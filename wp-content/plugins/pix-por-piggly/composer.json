@@ -1,0 +1,26 @@
+{
+    "name": "piggly-dev/woocommerce-pix",
+    "description": "Implemente o Pix de uma forma simples e rápida em sua loja Woocommerce.",
+    "type": "wordpress-plugin",
+    "require": {
+        "piggly/php-pix": "^2.0.0"
+    },
+    "license": "GPL-2.0+",
+    "authors": [
+        {
+            "name": "Caique Araujo",
+            "email": "caique@piggly.com.br"
+        },
+        {
+            "name": "Piggly Lab",
+            "email": "dev@piggly.com.br"
+        }
+    ],
+	"autoload": {
+        "psr-4": {
+            "Piggly\\WC\\Pix\\": "src/"
+        }
+	},
+	"minimum-stability": "stable",
+	"version": "1.2.0"
+}
