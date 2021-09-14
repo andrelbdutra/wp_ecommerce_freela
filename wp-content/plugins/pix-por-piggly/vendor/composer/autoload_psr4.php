@@ -6,8 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'chillerlan\\Settings\\' => array($vendorDir . '/chillerlan/php-settings-container/src'),
-    'chillerlan\\QRCode\\' => array($vendorDir . '/chillerlan/php-qrcode/src'),
-    'Piggly\\WC\\Pix\\' => array($baseDir . '/src'),
-    'Piggly\\Pix\\' => array($vendorDir . '/piggly/php-pix/src'),
+    'Piggly\\WooPixGateway\\' => array($baseDir . '/src'),
 );

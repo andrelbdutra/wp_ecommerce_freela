@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2016-12-12 11:30+0000\n"
 "POT-Revision-Date: Wed Aug 17 2016 17:04:12 GMT+0545 (Nepal Standard Time)\n"
-"PO-Revision-Date: 2021-07-22 21:02+0000\n"
+"PO-Revision-Date: 2021-09-13 22:55+0000\n"
 "Last-Translator: \n"
 "Language-Team: Português do Brasil\n"
 "Language: pt_BR\n"
@@ -997,11 +997,11 @@ msgstr "Minha Conta"
 
 #: inc/template-tags.php:237
 msgid " Logout"
-msgstr "Deslogar"
+msgstr "Sair"
 
 #: inc/template-tags.php:243
 msgid "Login / Register"
-msgstr ""
+msgstr "Entrar / Registrar"
 
 #: inc/template-tags.php:254
 msgid "Wishlist"

@@ -102,7 +102,7 @@ $elements = [
             [
                 'key'    => 'team-member-carousel',
                 'title'  => __( 'Team Member Carousel', 'essential-addons-for-elementor-lite'),
-                'demo_link' => 'https://essential-addons.com/elementor/team-member-carousel/',
+                'demo_link' => 'https://essential-addons.com/elementor/team-members-carousel/',
                 'doc_link' => 'https://essential-addons.com/elementor/docs/team-member-carousel/',
                 'is_pro' => true
             ],
@@ -524,6 +524,12 @@ $elements = [
 		        'title' => __( 'Woo Product Compare', 'essential-addons-for-elementor-lite'),
 		        'demo_link' => 'https://essential-addons.com/elementor/woo-product-compare/',
 		        'doc_link' => 'https://essential-addons.com/elementor/docs/woo-product-compare/'
+	        ],
+            [
+		        'key'   => 'woo-product-gallery',
+		        'title' => __( 'Woo Product Gallery', 'essential-addons-for-elementor-lite'),
+		        'demo_link' => 'https://essential-addons.com/elementor/woo-product-gallery/',
+		        'doc_link' => 'https://essential-addons.com/elementor/docs/woo-product-gallery/'
 	        ],
         ]
     ]
