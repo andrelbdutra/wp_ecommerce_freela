@@ -1,0 +1,52 @@
+login BD: root
+BD: wp_freela_1
+nome user: andre
+senha: zkYB7#qIuxg&*xb2Rm
+
+Cidade e estado: Marabá-Pará 
+Cep: 68507765
+Rua e número: Avenida F, Quadra 227, lote 22
+Bairro: Nova marabá- cidade jardim
+
+O Facebook é Graciosa Kosmeticos Altamira 
+
+O insta é @graciosakosmeticos
+
+Os Contatos são pelo WhatsApp, Messenger e direct do Instagram 
+
+Os números pra contato são 
+Andreia: (94)992917014
+Edelvan: (94) 991627091
+Marlete (em Altamira) : (93) 991428321
+
+https://www.roselielingerie.com.br/
+
+#946F40 / #FBC883 / #000000
+
+Cinzel / Baliland
+
+----------------------------------------------------------------------------------------------
+[privacy_policy]/
+
+Plugin: Really Simple SSL - site seguro (https://www.youtube.com/watch?v=dpzuzRxjeZk)
+
+ir no hostgator e gerar certificado ssl
+
+entrar cpainel, ir em mysql, criar um banco de dados e usuario para ele, adicionar o usuario ao banco de dados, voltar, ir em gerenciar arquivos, criar public_gtml, adicionar arquivos do site e mudar o nome do banco de dados no 
+wp-config.php
+
+
+whatsapp button: WP Sticky Button - Click to Chat
+
+------------------------------------------------------------------------------------------------
+Mudar:
+- emails do site (configurações/wooCommerce)
+- traduzir informações e mensagens do wooComerce.
+------------------------------------------------------------------------------------------------
+Preciso:
+- email administrativo
+- email que recebera os pagamentos (paypal e pagseguro)
+- token pagseguro "https://acesso.pagseguro.uol.com.br/?dest=http://pagseguro.uol.com.br/preferencias/integracoes.jhtml", ir em utilização de API's e clicar em gerar um token, irá aparecer um código, copie e me envie.
+-------------------------------------------------------------------------------------------------
+Tutorial de uso:
+- cupom
